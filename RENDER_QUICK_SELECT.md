@@ -13,16 +13,6 @@ You need to create **4 Web Services**:
 3. ✅ **Goals Service** → Web Service
 4. ✅ **API Gateway** → Web Service
 
-### ❌ Don't Choose:
-
-- **Static Site** - Only for frontend (use Vercel instead)
-- **Private Service** - For internal services only
-- **Background Worker** - For scheduled tasks
-- **Cron Job** - For scheduled jobs
-- **Postgres** - Database (we're using MongoDB Atlas)
-- **Key Value** - Redis/cache (not needed)
-- **Blueprint** - Requires payment info (use manual deployment)
-
 ## 📋 Quick Steps
 
 1. Click **"Web Service"**
