@@ -36,3 +36,7 @@ artifacts/
 .idea/
 *.sln.iml
 
+# Production configs with secrets
+appsettings.Production.json
+*.secrets.json
+
