@@ -1,0 +1,113 @@
+version: '3.8'
+
+services:
+  # Task Service (Java/Spring Boot)
+  task-service:
+    build: ./task-service
+    container_name: skillsync-task-service
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:h2:mem:taskdb
+    networks:
+      - skillsync-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Goals Service (C#/.NET)
+  goals-service:
+    build: ./goals-service
+    container_name: skillsync-goals-service
+    ports:
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_URLS=http://+:5001
+      - ConnectionStrings__MongoDB=mongodb://mongo:27017
+      - MongoDB__DatabaseName=skillsync_goals
+    depends_on:
+      - mongo
+    networks:
+      - skillsync-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Timer Service (Go)
+  timer-service:
+    build: ./timer-service
+    container_name: skillsync-timer-service
+    ports:
+      - "8082:8082"
+    environment:
+      - PORT=8082
+    networks:
+      - skillsync-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8082/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # API Gateway (Node.js)
+  api-gateway:
+    build: ./api-gateway
+    container_name: skillsync-api-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - TASK_SERVICE_URL=http://task-service:8080
+      - GOALS_SERVICE_URL=http://goals-service:5001
+      - TIMER_SERVICE_URL=http://timer-service:8082
+    depends_on:
+      - task-service
+      - goals-service
+      - timer-service
+    networks:
+      - skillsync-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend (React)
+  frontend:
+    build: ./frontend
+    container_name: skillsync-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - api-gateway
+    networks:
+      - skillsync-network
+
+  # MongoDB for Goals Service
+  mongo:
+    image: mongo:7.0
+    container_name: skillsync-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - skillsync-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  skillsync-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
+

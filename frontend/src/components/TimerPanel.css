@@ -1,0 +1,182 @@
+.timer-panel {
+  width: 100%;
+}
+
+.timer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.timer-form {
+  background: #f5f5f5;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.timer-form input,
+.timer-form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.timers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.timer-card {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #4caf50;
+  transition: transform 0.2s;
+}
+
+.timer-card.running {
+  border-left-color: #2196f3;
+  background: #e3f2fd;
+}
+
+.timer-card.stopped {
+  border-left-color: #999;
+}
+
+.timer-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.timer-header-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 15px;
+}
+
+.timer-header-card h3 {
+  margin: 0;
+  flex: 1;
+}
+
+.timer-display {
+  margin-bottom: 15px;
+}
+
+.timer-time {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #667eea;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.timer-progress {
+  background: #e0e0e0;
+  border-radius: 10px;
+  height: 20px;
+  overflow: hidden;
+}
+
+.timer-progress-bar {
+  background: linear-gradient(90deg, #4caf50 0%, #2196f3 100%);
+  height: 100%;
+  transition: width 0.3s;
+}
+
+.timer-actions {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.btn-start {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s;
+}
+
+.btn-start:hover {
+  background: #45a049;
+}
+
+.btn-stop {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s;
+}
+
+.btn-stop:hover {
+  background: #da190b;
+}
+
+.timer-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.status-idle {
+  background: #999;
+  color: white;
+}
+
+.status-running {
+  background: #2196f3;
+  color: white;
+}
+
+.status-paused {
+  background: #ff9800;
+  color: white;
+}
+
+.status-stopped {
+  background: #666;
+  color: white;
+}
+
+.type-badge {
+  background: #e0e0e0;
+  color: #666;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+.empty-state {
+  text-align: center;
+  color: #999;
+  padding: 40px;
+  grid-column: 1 / -1;
+}
+
