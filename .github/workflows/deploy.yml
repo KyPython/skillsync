@@ -1,0 +1,20 @@
+name: Deploy to Render and Vercel
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  # Render deployment happens automatically via Render's GitHub integration
+  # This workflow is for documentation and can trigger manual deployments
+  
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deployment Notification
+        run: |
+          echo "🚀 Deployment triggered!"
+          echo "Render services will auto-deploy via GitHub integration"
+          echo "Vercel will auto-deploy via GitHub integration"
+

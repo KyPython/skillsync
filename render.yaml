@@ -1,0 +1,71 @@
+services:
+  # API Gateway
+  - type: web
+    name: skillsync-api-gateway
+    env: node
+    buildCommand: npm install
+    startCommand: node src/index.js
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: TASK_SERVICE_URL
+        fromService:
+          type: web
+          name: skillsync-task-service
+          property: host
+      - key: GOALS_SERVICE_URL
+        fromService:
+          type: web
+          name: skillsync-goals-service
+          property: host
+      - key: TIMER_SERVICE_URL
+        fromService:
+          type: web
+          name: skillsync-timer-service
+          property: host
+
+  # Task Service (Java/Spring Boot)
+  - type: web
+    name: skillsync-task-service
+    env: docker
+    dockerfilePath: ./task-service/Dockerfile
+    dockerContext: ./task-service
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: production
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:h2:mem:taskdb
+      - key: SERVER_PORT
+        value: 8080
+
+  # Goals Service (C#/.NET)
+  - type: web
+    name: skillsync-goals-service
+    env: docker
+    dockerfilePath: ./goals-service/Dockerfile
+    dockerContext: ./goals-service
+    envVars:
+      - key: ASPNETCORE_URLS
+        value: http://+:5001
+      - key: ConnectionStrings__MongoDB
+        fromDatabase:
+          name: skillsync-mongodb
+          property: connectionString
+      - key: MongoDB__DatabaseName
+        value: skillsync_goals
+
+  # Timer Service (Go)
+  - type: web
+    name: skillsync-timer-service
+    env: docker
+    dockerfilePath: ./timer-service/Dockerfile
+    dockerContext: ./timer-service
+    envVars:
+      - key: PORT
+        value: 8082
+
+databases:
+  - name: skillsync-mongodb
+    databaseName: skillsync_goals
+    plan: free
+
