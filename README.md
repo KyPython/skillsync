@@ -244,10 +244,6 @@ This is a portfolio project demonstrating:
 - Modern frontend development
 - Docker containerization
 
-## 📄 License
-
-MIT License - Feel free to use this as a learning resource or portfolio project.
-
 ---
 
 **Built with ❤️ to showcase full-stack microservices development**
